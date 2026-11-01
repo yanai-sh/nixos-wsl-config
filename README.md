@@ -1,10 +1,12 @@
 # NixOS-WSL configuration
 
 Declarative, dendritic configuration for a single-user NixOS-WSL developer
-workstation. The native platform is `aarch64-linux`; NixOS binfmt support keeps
-`x86_64-linux` binaries available when needed. Home Manager owns the user
-environment, Catppuccin provides theming, and imported modules under `core/` and
-`modules/` compose the host.
+workstation. The native platform is `aarch64-linux`; Linux software runs
+natively rather than through x86_64 binfmt emulation. Windows interoperability
+remains enabled, so Windows ARM64 executables run natively and Windows x64
+executables can use Prism. Home Manager owns the user environment, Catppuccin
+provides theming, and imported modules under `core/` and `modules/` compose the
+host.
 
 The Nix registry and `NIX_PATH` both resolve `nixpkgs` to the deployed flake
 lock. OpenSSH is disabled. NixOS-WSL masks the NixOS firewall service, so

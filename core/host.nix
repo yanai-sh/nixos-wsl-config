@@ -25,7 +25,6 @@ in {
     # --- Platform & Architecture ---
     nixpkgs.hostPlatform = vars.system;
     nixpkgs.config.allowUnfree = true;
-    boot.binfmt.emulatedSystems = ["x86_64-linux"];
 
     # --- System & Networking ---
     networking.hostName = vars.hostname;
@@ -55,7 +54,10 @@ in {
     wsl = {
       enable = true;
       defaultUser = vars.username;
-      interop.register = true;
+      interop = {
+        register = true;
+        includePath = true;
+      };
     };
 
     # --- Dynamic Linker (FHS Emulation for Cursor & Language Servers) ---
