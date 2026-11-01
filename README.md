@@ -12,6 +12,28 @@ The Nix registry and `NIX_PATH` both resolve `nixpkgs` to the deployed flake
 lock. OpenSSH is disabled. NixOS-WSL masks the NixOS firewall service, so
 Windows and Hyper-V are the network boundary.
 
+## Package scope
+
+Personal command-line tools belong in the Home Manager `home.packages` list in
+`core/packages.nix`. When Home Manager provides a `programs.<name>` module,
+prefer enabling that module under `modules/` so installation and configuration
+remain together. Reserve `environment.systemPackages` for recovery tools,
+system administration, services, or commands required outside the user
+environment.
+
+For a package provided by nixpkgs, such as `htop`, add `htop` to
+`home.packages` in `core/packages.nix`; no input or lock-file change is needed.
+
+For a package not provided by nixpkgs, prefer a maintained flake that exports a
+package for `aarch64-linux`. Add that flake under `inputs` in `flake.nix`, make
+its nixpkgs input follow the root nixpkgs when supported, and add the exported
+package to `home.packages`. The existing `llm-agents` input and its
+`cursor-agent` package demonstrate this pattern. Regenerate and commit
+`flake.lock` whenever an input is added or updated.
+
+Avoid persistent `nix-env` and `nix profile` installations because they create
+package state outside this repository.
+
 ## Operations
 
 ```console

@@ -5,9 +5,8 @@ _: {
     vars,
     ...
   }: {
-    environment.systemPackages = with pkgs; [
+    home-manager.users.${vars.username}.home.packages = with pkgs; [
       # Core CLI Utils
-      git
       curl
       ripgrep
       fd
@@ -19,7 +18,6 @@ _: {
       inputs.llm-agents.packages.${vars.system}.cursor-agent
 
       # LSP Tools
-      nil
       nixd
       alejandra
     ];
