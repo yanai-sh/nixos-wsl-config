@@ -34,6 +34,8 @@ in {
     time.timeZone = vars.timeZone;
 
     # --- Nix Daemon Settings ---
+    nix.registry.nixpkgs.flake = inputs.nixpkgs;
+    nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     nix.settings = {
       auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command"];
