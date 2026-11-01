@@ -20,7 +20,7 @@ _: {
           pull.rebase = true;
           push.autoSetupRemote = true;
           core.editor = vars.editor;
-          credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+          credential.helper = "!${pkgs.gh}/bin/gh auth git-credential";
         };
       };
 
