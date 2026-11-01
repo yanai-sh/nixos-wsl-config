@@ -1,0 +1,240 @@
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+palette = "catppuccin_mocha"
+follow_symlinks = false
+
+format = """
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$python\
+$azure\
+$aws\
+$docker_context\
+$line_break\
+$character"""
+
+# ----------------------------------------------------------------------------
+# Core Prompt Behaviors
+# ----------------------------------------------------------------------------
+[os]
+disabled = false
+format = "[$symbol]($style)"
+style = "bold text"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](subtext1)"
+
+[directory]
+style = "bold lavender"
+read_only = " 󰌾"
+truncation_length = 4
+truncation_symbol = "…/"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[username]
+style_user = "blue bold"
+style_root = "red bold"
+format = "[$user]($style) "
+show_always = false
+
+[hostname]
+ssh_only = true
+ssh_symbol = " "
+format = "[$ssh_symbol$hostname]($style) "
+style = "mauve"
+
+# ----------------------------------------------------------------------------
+# Git Integration
+# ----------------------------------------------------------------------------
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bold mauve"
+
+[git_commit]
+tag_symbol = '  '
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style) "
+style = "sky"
+conflicted = ""
+untracked = ""
+modified = ""
+staged = ""
+renamed = ""
+deleted = ""
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "subtext0"
+
+# ----------------------------------------------------------------------------
+# Noise Reduction
+# ----------------------------------------------------------------------------
+[cmd_duration]
+disabled = true
+
+[package]
+disabled = true
+
+# ----------------------------------------------------------------------------
+# Toolchains, Languages, and Environments (Alphabetical)
+# ----------------------------------------------------------------------------
+[aws]
+symbol = " "
+
+[azure]
+symbol = " "
+
+[battery]
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+unknown_symbol = "󰂑 "
+empty_symbol = "󰂎 "
+
+[bun]
+symbol = " "
+
+[c]
+symbol = " "
+
+[cmake]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[container]
+symbol = " "
+
+[cpp]
+symbol = " "
+
+[deno]
+symbol = " "
+
+[direnv]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[dotnet]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[gcloud]
+symbol = "󱇶 "
+
+[golang]
+symbol = " "
+
+[gradle]
+symbol = " "
+
+[helm]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[kubernetes]
+symbol = "󱃾 "
+
+[lua]
+symbol = " "
+
+[maven]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[os.symbols]
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+CachyOS = " "
+Debian = " "
+Fedora = " "
+Linux = " "
+NixOS = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[pulumi]
+symbol = " "
+
+[python]
+symbol = " "
+format = "[$symbol$virtualenv]($style) "
+style = "subtext0"
+detect_extensions = []
+detect_files = []
+
+[rust]
+symbol = "󱘗 "
+
+[status]
+symbol = " "
+
+[terraform]
+symbol = " "
+
+[zig]
+symbol = " "
+
+# ----------------------------------------------------------------------------
+# Catppuccin Mocha Palette
+# ----------------------------------------------------------------------------
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
