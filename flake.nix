@@ -7,10 +7,21 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:mightyiam/import-tree";
 
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = inputs @ {
@@ -24,6 +35,7 @@
       imports = [
         inputs.flake-parts.flakeModules.modules
         (import-tree ./core)
+        (import-tree ./modules)
       ];
     };
 }

@@ -12,6 +12,7 @@ in {
 
     modules = [
       inputs.nixos-wsl.nixosModules.default
+      inputs.home-manager.nixosModules.default
       self.modules.nixos.wsl
     ];
   };
@@ -20,7 +21,7 @@ in {
     vars,
     ...
   }: {
-    # --- Platform ---
+    # --- Platform & Architecture ---
     nixpkgs.hostPlatform = vars.system;
     nixpkgs.config.allowUnfree = true;
 
@@ -53,5 +54,21 @@ in {
       interop.register = true;
     };
 
+    # --- Home Manager ---
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      backupFileExtension = "backup";
+      sharedModules = [inputs.catppuccin.homeModules.catppuccin];
+
+      users.${vars.username} = {
+        home.stateVersion = vars.homeStateVersion;
+        catppuccin = {
+          enable = true;
+          autoEnable = true;
+          flavor = "mocha";
+        };
+      };
+    };
   };
 }
