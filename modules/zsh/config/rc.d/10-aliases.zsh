@@ -1,6 +1,4 @@
-# ~/.config/nixos/modules/zsh/rc.d/10-aliases.zsh
-
-# Core Utilities
+# Core utilities
 alias cat='bat'
 alias spf='superfile'
 

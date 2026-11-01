@@ -16,6 +16,12 @@ _: {
     };
 
     home-manager.users.${vars.username} = {
+      config,
+      lib,
+      ...
+    }: {
+      xdg.configFile."zsh".source = ./config;
+
       home.packages = [pkgs.zsh-completions];
 
       home.sessionVariables = {
@@ -27,6 +33,7 @@ _: {
       programs.zsh = {
         enable = true;
         enableCompletion = true;
+        dotDir = config.home.homeDirectory;
 
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
@@ -46,11 +53,9 @@ _: {
           }
         ];
 
-        # Local *.zsh source
-        initContent = ''
-          for file in ${./rc.d}/*.zsh(N); do
-            source "$file"
-          done
+        # Load the conventional native configuration after managed integrations.
+        initContent = lib.mkOrder 1500 ''
+          source "${config.xdg.configHome}/zsh/.zshrc"
         '';
       };
     };

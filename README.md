@@ -12,6 +12,27 @@ The Nix registry and `NIX_PATH` both resolve `nixpkgs` to the deployed flake
 lock. OpenSSH is disabled. NixOS-WSL masks the NixOS firewall service, so
 Windows and Hyper-V are the network boundary.
 
+## Native configuration files
+
+Home Manager remains the deployment owner for dotfiles, while applications
+with established configuration formats keep their source configuration in that
+native format. Files are copied into the Nix store and linked into place, so
+changes require `nh os switch` and participate in generations and rollback.
+
+Zsh keeps its conventional entry point and fragments under
+`modules/zsh/config/`. Home Manager generates `~/.zshrc` for managed
+integrations, then that file sources `$XDG_CONFIG_HOME/zsh/.zshrc`, which loads
+`rc.d/*.zsh` in lexical order. Starship reads the tracked `starship.toml`
+directly through an XDG config link.
+
+Use `fromTOML` or `fromJSON` only when settings need Nix-level composition,
+host conditionals, or store-path interpolation. Out-of-store links and
+secondary dotfile managers are intentionally avoided so that live
+configuration cannot drift from the active Home Manager generation.
+
+Repository checks validate Zsh syntax and Starship's TOML schema in addition
+to formatting and Nix linting.
+
 ## Package scope
 
 Personal command-line tools belong in the Home Manager `home.packages` list in
