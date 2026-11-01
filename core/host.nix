@@ -18,12 +18,14 @@ in {
   };
 
   flake.modules.nixos.wsl = {
+    pkgs,
     vars,
     ...
   }: {
     # --- Platform & Architecture ---
     nixpkgs.hostPlatform = vars.system;
     nixpkgs.config.allowUnfree = true;
+    boot.binfmt.emulatedSystems = ["x86_64-linux"];
 
     # --- System & Networking ---
     networking.hostName = vars.hostname;
@@ -54,6 +56,26 @@ in {
       enable = true;
       defaultUser = vars.username;
       interop.register = true;
+    };
+
+    # --- Dynamic Linker (FHS Emulation for Cursor & Language Servers) ---
+    programs.nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        curl
+        expat
+        glibc
+        icu
+        krb5
+        libsecret
+        libuv
+        nspr
+        nss
+        openssl
+        stdenv.cc.cc.lib
+        util-linux
+        zlib
+      ];
     };
 
     # --- Home Manager ---
