@@ -27,6 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -39,6 +43,7 @@
 
       imports = [
         inputs.flake-parts.flakeModules.modules
+        inputs.treefmt-nix.flakeModule
         (import-tree ./core)
         (import-tree ./modules)
       ];
