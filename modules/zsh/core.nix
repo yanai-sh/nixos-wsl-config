@@ -28,6 +28,7 @@ _: {
         EDITOR = vars.editor;
         VISUAL = vars.editor;
         PAGER = "bat";
+        SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/wsl2-ssh-agent.sock";
       };
 
       programs.zsh = {
