@@ -11,15 +11,10 @@ _: {
       ripgrep
       fd
       jq
-      gh
       superfile
 
       # AI & Agents
       inputs.llm-agents.packages.${vars.system}.cursor-agent
-
-      # LSP Tools
-      nixd
-      alejandra
     ];
   };
 }
