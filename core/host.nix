@@ -28,8 +28,6 @@ in {
 
     # --- System & Networking ---
     networking.hostName = vars.hostname;
-    # NixOS-WSL masks firewall.service; Windows and Hyper-V provide the
-    # effective network boundary for this single-user workstation.
     networking.firewall.enable = false;
     system.stateVersion = vars.systemStateVersion;
     time.timeZone = vars.timeZone;
@@ -59,6 +57,14 @@ in {
         includePath = true;
       };
     };
+
+    # Declarative symlinks for non-interactive shells invoked by Windows (Cursor, VS Code)
+    systemd.tmpfiles.rules = let
+      wslBash = pkgs.writeScript "wsl-bash" (builtins.readFile ./wsl-bash.sh);
+    in [
+      "L+ /bin/bash - - - - ${wslBash}"
+      "L+ /usr/bin/bash - - - - /bin/bash"
+    ];
 
     # --- Dynamic Linker (FHS Emulation for Cursor & Language Servers) ---
     programs.nix-ld = {
