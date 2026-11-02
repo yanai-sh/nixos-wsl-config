@@ -63,8 +63,7 @@ package state outside this repository.
 
 `NH_FLAKE` is already set to this repository. A weekly timer runs `nh clean all`.
 GitHub Actions runs `nix flake check` on `ubuntu-latest` for the `x86_64-linux`
-checks. It does not build the `aarch64` host closure. A weekly workflow updates
-the flake lock, runs that same check, and opens a pull request.
+checks. It does not build the `aarch64` host closure. Flake updates stay manual.
 
 ```console
 # Update inputs, then review and validate the result
