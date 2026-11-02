@@ -3,8 +3,10 @@
 Declarative, dendritic configuration for a single-user NixOS-WSL developer
 workstation. The native platform is `aarch64-linux`; Linux software runs
 natively rather than through x86_64 binfmt emulation. Windows interoperability
-remains enabled, so Windows ARM64 executables run natively and Windows x64
-executables can use Prism. Home Manager owns the user environment, Catppuccin
+stays registered, so a Windows executable can still run, while Linux `PATH`
+stays authoritative. `pwsh`, `cmd`, and `explorer` are the curated Windows
+commands. Windows ARM64 executables run natively and Windows x64 executables
+can use Prism. Home Manager owns the user environment, Catppuccin
 provides theming, and imported modules under `core/` and `modules/` compose the
 host.
 
@@ -35,12 +37,14 @@ to formatting and Nix linting.
 
 ## Package scope
 
-Personal command-line tools belong in the Home Manager `home.packages` list in
-`core/packages.nix`. When Home Manager provides a `programs.<name>` module,
-prefer enabling that module under `modules/` so installation and configuration
-remain together. Reserve `environment.systemPackages` for recovery tools,
-system administration, services, or commands required outside the user
-environment.
+Personal command-line tools that are not tied to a configured program belong in
+the Home Manager `home.packages` list in `core/packages.nix`. Tools that a
+module already configures are installed from that module: `gh` from
+`modules/cli/git.nix`, and `nixd` and Alejandra from `modules/editor/helix.nix`.
+When Home Manager provides a `programs.<name>` module, prefer enabling that
+module under `modules/` so installation and configuration remain together.
+Reserve `environment.systemPackages` for recovery tools, system administration,
+services, or commands required outside the user environment.
 
 For a package provided by nixpkgs, such as `htop`, add `htop` to
 `home.packages` in `core/packages.nix`; no input or lock-file change is needed.
@@ -57,20 +61,56 @@ package state outside this repository.
 
 ## Operations
 
+`NH_FLAKE` is already set to this repository. A weekly timer runs `nh clean all`.
+GitHub Actions runs `nix flake check` on `ubuntu-latest` for the `x86_64-linux`
+checks. It does not build the `aarch64` host closure. A weekly workflow updates
+the flake lock, runs that same check, and opens a pull request.
+
 ```console
 # Update inputs, then review and validate the result
 nix flake update
 nix fmt -- --ci
 nix flake check
 
-# Apply this host configuration
-sudo nixos-rebuild switch --flake .#nixos-wsl
+# Apply, inspect, or build this host
+nh os switch
+nh os build
+nh os info
 
 # Roll back to the previous generation
-sudo nixos-rebuild switch --rollback
+nh os rollback
+
+# Manual garbage collection
+nh clean all
 ```
 
-`nh os switch` can also apply the configured flake from any directory.
+`nh-rollback` is the shell alias for `nh os rollback`.
+
+## Projects
+
+Normal projects use a Nix flake and nix-direnv. Both direnv and nix-direnv are
+already enabled in the host shell. Start a project from this flake:
+
+```console
+nix flake init -t /home/yanai/.config/nixos#dev
+```
+
+Use devenv when a project needs local services, processes, or tasks. Use mise
+when collaborators cannot use Nix. Neither tool is installed on this host.
+
+## Windows boundary
+
+`wsl2-ssh-agent` bridges the Windows OpenSSH agent to
+`$XDG_RUNTIME_DIR/wsl2-ssh-agent.sock`. Git signs with the public key from that
+agent; the private key stays in Windows. `validate-wsl-interop` checks that the
+agent socket is live and that `pwsh`, `cmd`, and `explorer` resolve. Run it on
+the host after a switch. It is not part of the GitHub check.
+
+## Which environment to change
+
+Use this flake for the declarative workstation. Use FedoraLinux-44 for
+short-lived imperative experiments, including tools that are not ready to be
+declared.
 
 ## One-time migration
 
