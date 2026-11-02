@@ -52,10 +52,6 @@ in {
     wsl = {
       enable = true;
       defaultUser = vars.username;
-      interop = {
-        register = true;
-        includePath = true;
-      };
     };
 
     # Declarative symlinks for non-interactive shells invoked by Windows (Cursor, VS Code)
